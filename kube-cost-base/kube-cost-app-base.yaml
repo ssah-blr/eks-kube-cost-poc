@@ -1,0 +1,51 @@
+# The namespace used for the Collector.
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    name: costapp
+  name: costapp
+---
+# The Service Account used for the Collector.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: costapp-collector
+  namespace: costapp
+---
+# The cluster role grants read only access to key API groups.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: object-reader
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: [get, watch, list]
+- apiGroups: [apps]
+  resources: ["*"]
+  verbs: [get, watch, list]
+- apiGroups: [metrics.k8s.io]
+  resources: ["*"]
+  verbs: [get, watch, list]
+# - apiGroups: [storage.k8s.io]
+#   resources: ["*"]
+#   verbs: [get, watch, list]
+# - apiGroups: [apiextensions.k8s.io]
+#   resources: ["*"]
+#   verbs: [get, watch, list]
+---
+# The cluster role binding allows the Service Account for the collector in the costapp namespace to read objects in any namespace.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: read-objects-global
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: object-reader
+subjects:
+- kind: ServiceAccount
+  name: costapp-collector
+  namespace: costapp
+---
