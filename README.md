@@ -3,7 +3,7 @@
 - Python Based application to get Cost Details of Kubernetes Workloads.
 - Works like a cluster level agent / exporter
 - Can be used to generate json data Or as a prometheus exporter. 
-- Json data can be exported to tools like AWS insights / tableu / snowflake.
+- Json data can be exported to tools like AWS insights etc..
 
 ![Alt text](EKS-Cost-App.png?raw=true "EKS Cost App")
 
